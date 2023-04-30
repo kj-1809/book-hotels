@@ -1,23 +1,13 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
     provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "sqlite"
-    // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
-    url      = env("DATABASE_URL")
-}
-
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    provider     = "mysql"
+    url          = env("DATABASE_URL")
+    relationMode = "prisma"
 }
 
 // Necessary for Next auth
@@ -37,6 +27,7 @@ model Account {
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
+    @@index([userId])
 }
 
 model Session {
@@ -45,6 +36,13 @@ model Session {
     userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
+}
+
+enum UserRole {
+    USER
+    ADMIN
 }
 
 model User {
@@ -53,8 +51,12 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
+    role          UserRole  @default(USER)
     accounts      Account[]
     sessions      Session[]
+    bookings      Booking[]
+
+    @@map("users")
 }
 
 model VerificationToken {
@@ -63,4 +65,44 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+// Schemas for the website
+model Hotel {
+    id          String    @id @default(cuid())
+    name        String
+    info        String
+    description String    @db.Text
+    price       Int
+    rating      Int
+    amenities   Amenity[]
+    bookings    Booking[]
+
+    @@map("hotels")
+}
+
+model Amenity {
+    id     String  @id @default(cuid())
+    title  String
+    hotels Hotel[]
+
+    @@map("amenities")
+}
+
+model Booking {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    checkIn   DateTime
+    checkOut  DateTime
+    guests    Int
+    rooms     Int
+    total     Int
+    hotelId   String
+    hotel     Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+    userId    String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([hotelId])
+    @@index([userId])
+    @@map("bookings")
 }
