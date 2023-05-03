@@ -7,6 +7,7 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { Montserrat } from "next/font/google";
 import { Footer } from "~/components/Footer";
+import { Toaster } from "react-hot-toast";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -20,6 +21,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <div className={`${montserrat.variable} font-sans`}>
       <SessionProvider session={session}>
+        <Toaster position="bottom-center" reverseOrder={false} />
         <Navbar />
         <Component {...pageProps} />
         {/* <Footer /> */}
