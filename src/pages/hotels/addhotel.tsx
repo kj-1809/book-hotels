@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
 import { generateReactHelpers } from "@uploadthing/react";
 import type { OurFileRouter } from "~/server/uploadthing";
+import Link from "next/link";
 
 const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 
@@ -78,49 +79,49 @@ const AddHotel = () => {
   return (
     <div className="p-5">
       <h1 className="text-3xl font-bold">Add new Hotel</h1>
-      <div className="flex flex-row mt-10 items-center">
+      <div className="mt-10 flex flex-row items-center">
         <h1>Name</h1>
         <input
-          className="rounded-md border border-sky-100 px-2 w-72 h-10 ml-5"
+          className="ml-5 h-10 w-72 rounded-md border border-sky-100 px-2"
           value={name}
           onChange={(e) => setName(e.target.value)}
         ></input>
       </div>
-      <div className="flex flex-row mt-5 items-center">
+      <div className="mt-5 flex flex-row items-center">
         <h1>Info</h1>
         <input
-          className="rounded-md border border-sky-100 px-2 w-72 h-10 ml-5"
+          className="ml-5 h-10 w-72 rounded-md border border-sky-100 px-2"
           value={info}
           onChange={(e) => setInfo(e.target.value)}
         ></input>
       </div>
-      <div className="flex flex-row mt-5 items-center">
+      <div className="mt-5 flex flex-row items-center">
         <h1>Description</h1>
         <input
-          className="rounded-md border border-sky-100 px-2 w-72 h-10 ml-5"
+          className="ml-5 h-10 w-72 rounded-md border border-sky-100 px-2"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         ></input>
       </div>
-      <div className="flex flex-row mt-5 items-center">
+      <div className="mt-5 flex flex-row items-center">
         <h1>Price</h1>
         <input
-          className="rounded-md border border-sky-100 px-2 w-72 h-10 ml-5"
+          className="ml-5 h-10 w-72 rounded-md border border-sky-100 px-2"
           value={price}
           onChange={(e) => setPrice(parseInt(e.target.value))}
           type="number"
         ></input>
       </div>
-      <div className="flex flex-row mt-5 items-center">
+      <div className="mt-5 flex flex-row items-center">
         <h1>Rating</h1>
         <input
-          className="rounded-md border border-sky-100 px-2 w-72 h-10 ml-5"
+          className="ml-5 h-10 w-72 rounded-md border border-sky-100 px-2"
           value={rating}
           onChange={(e) => setRating(parseInt(e.target.value))}
           type="number"
         ></input>
       </div>
-      <div className="flex flex-row mt-5 items-center">
+      <div className="mt-5 flex flex-row items-center">
         <h1>Amenities</h1>
         <select
           name="amenities"
@@ -129,7 +130,7 @@ const AddHotel = () => {
           onChange={(e) => {
             setSelectedAmenity(e.target.value);
           }}
-          className = "h-10 ml-5"
+          className="ml-5 h-10"
         >
           <option value="select">select</option>
           {amenities &&
@@ -139,7 +140,13 @@ const AddHotel = () => {
               </option>
             ))}
         </select>
+        <Link href="/hotels/addamenity">
+          <div className=" ml-5 flex w-48 justify-center rounded-xl bg-primary px-4 py-2">
+            Add Amenity
+          </div>
+        </Link>
       </div>
+      {/* show the selected amenities */}
       {selectedAmenities.map((ele) => (
         <span className="pr-1" key={ele.title}>
           {ele.title}
@@ -158,7 +165,7 @@ const AddHotel = () => {
 
       <div
         onClick={handleSubmit}
-        className="flex w-32 justify-center rounded-xl bg-primary px-4 py-2 mt-10"
+        className="mt-10 flex w-32 justify-center rounded-xl bg-primary px-4 py-2"
       >
         Submit
       </div>

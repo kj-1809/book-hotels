@@ -14,7 +14,7 @@ const AddAmenity = () => {
       {
         onSuccess: () => {
           toast.success("Successfully added amenity !");
-          router.push("/")
+          router.push("/hotels/addhotel")
         },
         onError: (e) => {
           if (e.message === "TOO_MANY_REQUESTS") {

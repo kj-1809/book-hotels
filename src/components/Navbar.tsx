@@ -4,8 +4,8 @@ import Logo from "../../public/logo.png";
 import { useSession } from "next-auth/react";
 
 export const Navbar = () => {
-  const userId = true;  
-  const session = useSession()
+  const userId = true;
+  const session = useSession();
   return (
     <div className="flex flex-row items-center justify-between px-5 py-2 shadow-sm">
       <div className="p-2">
@@ -14,16 +14,24 @@ export const Navbar = () => {
         </Link>
       </div>
       <div className="p-1 sm:p-2">
-        <Link
+        {/* <Link
           href="/hotels/"
           className="m-2 sm:m-4 font-sans font-semibold opacity-60"
         >
           Hotels
-        </Link>
+        </Link> */}
+        {session.data?.user.role === "ADMIN" && (
+          <Link
+            href="/hotels/addhotel"
+            className="m-2 font-sans font-semibold opacity-60 sm:m-4"
+          >
+            Add Hotel 
+          </Link>
+        )}
         {!session.data?.user.userId && (
           <Link
             href="/api/auth/signin"
-            className="m-2 sm:m-4 font-sans font-semibold opacity-60"
+            className="m-2 font-sans font-semibold opacity-60 sm:m-4"
           >
             Login
           </Link>
@@ -31,7 +39,7 @@ export const Navbar = () => {
         {session.data?.user.userId && (
           <Link
             href="/bookings"
-            className="m-2 sm:m-4 font-sans font-semibold opacity-60"
+            className="m-2 font-sans font-semibold opacity-60 sm:m-4"
           >
             My Bookings
           </Link>
