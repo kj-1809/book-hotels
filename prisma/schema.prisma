@@ -69,16 +69,25 @@ model VerificationToken {
 
 // Schemas for the website
 model Hotel {
-    id          String    @id @default(cuid())
+    id          String     @id @default(cuid())
     name        String
     info        String
-    description String    @db.Text
+    description String     @db.Text
     price       Int
     rating      Int
     amenities   Amenity[]
     bookings    Booking[]
+    imageUrls   ImageUrl[]
 
     @@map("hotels")
+}
+
+model ImageUrl {
+    url     String @id
+    hotelId String
+    hotel   Hotel  @relation(fields: [hotelId], references: [id] , onDelete: Cascade)
+
+    @@index([hotelId])
 }
 
 model Amenity {
@@ -90,7 +99,7 @@ model Amenity {
 }
 
 model Booking {
-    id        String   @id @default(cuid())
+    id        Int      @id @default(autoincrement())
     createdAt DateTime @default(now())
     checkIn   DateTime
     checkOut  DateTime

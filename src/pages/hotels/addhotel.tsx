@@ -2,6 +2,10 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
+import { generateReactHelpers } from "@uploadthing/react";
+import type { OurFileRouter } from "~/server/uploadthing";
+
+const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 
 const AddHotel = () => {
   const [selectedAmenity, setSelectedAmenity] = useState<string>("");
@@ -14,23 +18,24 @@ const AddHotel = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
   const [rating, setRating] = useState(0);
-
-  const submitMutation = api.hotel.addHotel.useMutation();
-  console.log(selectedAmenities);
+  const [imageUrls, setImageUrls] = useState<{ url: string }[]>([]);
 
   const router = useRouter();
 
-  const {data : amenities} = api.hotel.fetchAmenities.useQuery();
+  const submitMutation = api.hotel.addHotel.useMutation();
+  const { data: amenities } = api.hotel.fetchAmenities.useQuery();
 
   useEffect(() => {
     if (selectedAmenity) {
-      selectedAmenities.push({ title: selectedAmenity });
+      setSelectedAmenities((prevValue) => [
+        ...prevValue,
+        { title: selectedAmenity },
+      ]);
       setReload(1 - reload);
     }
   }, [selectedAmenity]);
 
   function handleSubmit() {
-    console.log("clicked");
     submitMutation.mutate(
       {
         name,
@@ -39,6 +44,7 @@ const AddHotel = () => {
         price,
         rating,
         amenities: selectedAmenities,
+        imageUrls,
       },
       {
         onSuccess: () => {
@@ -47,13 +53,28 @@ const AddHotel = () => {
         },
         onError: (e) => {
           console.log("error : ", e);
+          console.log("zod error : ", e.data?.zodError?.fieldErrors);
+          console.log("zod : ", e.data?.zodError?.formErrors.length);
           toast.error("Some error occured !");
         },
       }
     );
   }
 
-  console.log(selectedAmenity);
+  const { getRootProps, getInputProps, isDragActive, files, startUpload } =
+    useUploadThing("imageUploader");
+
+  console.log("files : ", files);
+
+  const handleUpload = async () => {
+    const data = await startUpload();
+    const structuredData = data.map((ele) => ({
+      url: ele.fileUrl,
+    }));
+
+    setImageUrls(structuredData!);
+  };
+
   return (
     <div className="p-5">
       <h1 className="text-2xl font-bold">Add new Hotel</h1>
@@ -108,9 +129,12 @@ const AddHotel = () => {
           }}
         >
           <option value="select">select</option>
-          {amenities && amenities.map((amenity) => (
-            <option value={`${amenity.title}`} key={amenity.id}>{amenity.title}</option>
-          ))}
+          {amenities &&
+            amenities.map((amenity) => (
+              <option value={`${amenity.title}`} key={amenity.id}>
+                {amenity.title}
+              </option>
+            ))}
         </select>
       </div>
       {selectedAmenities.map((ele) => (
@@ -118,6 +142,17 @@ const AddHotel = () => {
           {ele.title}
         </span>
       ))}
+
+      <div {...getRootProps()}>
+        <input {...getInputProps()} />
+        <div>
+          {files.length > 0 && (
+            <button onClick={handleUpload}>Upload {files.length} files</button>
+          )}
+        </div>
+        Drop files here!
+      </div>
+
       <div
         onClick={handleSubmit}
         className="flex w-32 justify-center rounded-xl bg-primary px-4 py-2"

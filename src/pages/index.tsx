@@ -12,20 +12,12 @@ import homepageImage from "../../public/homepage.jpg";
 import Image from "next/image";
 import { useState } from "react";
 
-const tonedHotelObject = Prisma.validator<Prisma.HotelArgs>()({
-  select: {
-    id: true,
-    name: true,
-    price: true,
-    info: true,
-  },
-});
-
-type tonedHotel = Prisma.HotelGetPayload<typeof tonedHotelObject>;
-
 interface Props {
-  hotels: tonedHotel[];
-  username: string;
+  hotels: (Hotel & {
+    imageUrls : {
+      url : string
+    }[]
+  })[]
 }
 
 const Home: React.FC<Props> = ({ hotels }) => {
@@ -86,6 +78,7 @@ const Home: React.FC<Props> = ({ hotels }) => {
                   price={hotel.price}
                   key={hotel.id}
                   id={hotel.id}
+                  imgUrl={hotel.imageUrls[0]?.url || ""}
                 />
               );
             })
@@ -97,6 +90,7 @@ const Home: React.FC<Props> = ({ hotels }) => {
                   price={hotel.price}
                   key={hotel.id}
                   id={hotel.id}
+                  imgUrl={hotel.imageUrls[0]?.url || ""}
                 />
               );
             })}
@@ -109,12 +103,9 @@ export default Home;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const hotels = await prisma.hotel.findMany({
-    select: {
-      name: true,
-      id: true,
-      info: true,
-      price: true,
-    },
+    include : {
+      imageUrls : true
+    }
   });
 
   const session = await getServerAuthSession({

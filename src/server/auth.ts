@@ -19,15 +19,11 @@ export const authOptions: NextAuthOptions = {
         }
       })
       token.role = foundUser?.role!
-      console.log("jwt")
-      console.log(token)
       return token;
     },
     async session({session, token}){
       session.user.userId = token.sub!
       session.user.role = token.role 
-      console.log("session")
-      console.log(session)
       return session;
     }
   },

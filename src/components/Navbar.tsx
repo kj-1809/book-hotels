@@ -13,17 +13,17 @@ export const Navbar = () => {
           <Image alt="logo" src={Logo} height={50} width={100} />
         </Link>
       </div>
-      <div className="p-2">
+      <div className="p-1 sm:p-2">
         <Link
           href="/hotels/"
-          className="m-4 font-sans font-semibold opacity-60"
+          className="m-2 sm:m-4 font-sans font-semibold opacity-60"
         >
           Hotels
         </Link>
         {!session.data?.user.userId && (
           <Link
             href="/api/auth/signin"
-            className="m-4 font-sans font-semibold opacity-60"
+            className="m-2 sm:m-4 font-sans font-semibold opacity-60"
           >
             Login
           </Link>
@@ -31,7 +31,7 @@ export const Navbar = () => {
         {session.data?.user.userId && (
           <Link
             href="/bookings"
-            className="m-4 font-sans font-semibold opacity-60"
+            className="m-2 sm:m-4 font-sans font-semibold opacity-60"
           >
             My Bookings
           </Link>

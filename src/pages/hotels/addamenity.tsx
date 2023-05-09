@@ -6,19 +6,26 @@ import { useRouter } from "next/router";
 const AddAmenity = () => {
   const [name, setName] = useState("");
   const addAmenityMutation = api.hotel.addAmenity.useMutation();
-  const router = useRouter()
+  const router = useRouter();
   function handleSubmit() {
     console.log("clicked");
-    const data = addAmenityMutation.mutate({ title: name } , {
-      onSuccess : () => {
-        toast.success("Successfully added amenity !")
-        router.push("/")
-      },
-      onError : () => {
-        toast.error("Some error occured !")
+    const data = addAmenityMutation.mutate(
+      { title: name },
+      {
+        onSuccess: () => {
+          toast.success("Successfully added amenity !");
+          // router.push("/")
+        },
+        onError: (e) => {
+          if (e.message === "TOO_MANY_REQUESTS") {
+            toast.error("Too Many Requests! Please try again later!");
+          } else {
+            toast.error("Some error occured !");
+          }
+        },
       }
-    });
-    console.log(`data : ${data}`)
+    );
+    console.log(`data : ${data}`);
   }
 
   return (
