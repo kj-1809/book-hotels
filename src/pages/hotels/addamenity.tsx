@@ -14,7 +14,7 @@ const AddAmenity = () => {
       {
         onSuccess: () => {
           toast.success("Successfully added amenity !");
-          // router.push("/")
+          router.push("/")
         },
         onError: (e) => {
           if (e.message === "TOO_MANY_REQUESTS") {
@@ -29,21 +29,22 @@ const AddAmenity = () => {
   }
 
   return (
-    <div className="p-5">
-      <h1 className="text-2xl font-bold">Add new Amenity</h1>
-      <div className="m-1 flex flex-row">
-        <h1>Name</h1>
+    <div className="flex flex-col p-7">
+      <h1 className="text-3xl font-bold">Add new Amenity</h1>
+      <div className="flex flex-row mt-10 items-center">
+        <h1 className = "font-medium text-lg">Name</h1>
         <input
-          className="rounded-xl border border-sky-100 px-2"
+          className="rounded-md border border-sky-100 px-2 w-72 h-10 ml-5"
           value={name}
           onChange={(e) => setName(e.target.value)}
         ></input>
-        <div
-          onClick={handleSubmit}
-          className="flex w-32 justify-center rounded-xl bg-primary px-4 py-2"
-        >
-          Submit
-        </div>
+      </div>
+
+      <div
+        onClick={handleSubmit}
+        className="flex w-32 justify-center rounded-xl bg-primary px-4 py-2 mt-10"
+      >
+        Submit
       </div>
     </div>
   );

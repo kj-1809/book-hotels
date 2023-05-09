@@ -77,48 +77,50 @@ const AddHotel = () => {
 
   return (
     <div className="p-5">
-      <h1 className="text-2xl font-bold">Add new Hotel</h1>
-      <div className="m-1 flex flex-row">
+      <h1 className="text-3xl font-bold">Add new Hotel</h1>
+      <div className="flex flex-row mt-10 items-center">
         <h1>Name</h1>
         <input
-          className="rounded-xl border border-sky-100 px-2"
+          className="rounded-md border border-sky-100 px-2 w-72 h-10 ml-5"
           value={name}
           onChange={(e) => setName(e.target.value)}
         ></input>
       </div>
-      <div className="m-1 flex flex-row">
+      <div className="flex flex-row mt-5 items-center">
         <h1>Info</h1>
         <input
-          className="rounded-xl border border-sky-100 px-2"
+          className="rounded-md border border-sky-100 px-2 w-72 h-10 ml-5"
           value={info}
           onChange={(e) => setInfo(e.target.value)}
         ></input>
       </div>
-      <div className="m-1 flex flex-row">
+      <div className="flex flex-row mt-5 items-center">
         <h1>Description</h1>
         <input
-          className="rounded-xl border border-sky-100 px-2"
+          className="rounded-md border border-sky-100 px-2 w-72 h-10 ml-5"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         ></input>
       </div>
-      <div className="m-1 flex flex-row">
+      <div className="flex flex-row mt-5 items-center">
         <h1>Price</h1>
         <input
-          className="rounded-xl border border-sky-100 px-2"
+          className="rounded-md border border-sky-100 px-2 w-72 h-10 ml-5"
           value={price}
           onChange={(e) => setPrice(parseInt(e.target.value))}
+          type="number"
         ></input>
       </div>
-      <div className="m-1 flex flex-row">
+      <div className="flex flex-row mt-5 items-center">
         <h1>Rating</h1>
         <input
-          className="rounded-xl border border-sky-100 px-2"
+          className="rounded-md border border-sky-100 px-2 w-72 h-10 ml-5"
           value={rating}
           onChange={(e) => setRating(parseInt(e.target.value))}
+          type="number"
         ></input>
       </div>
-      <div className="m-1 flex flex-row">
+      <div className="flex flex-row mt-5 items-center">
         <h1>Amenities</h1>
         <select
           name="amenities"
@@ -127,6 +129,7 @@ const AddHotel = () => {
           onChange={(e) => {
             setSelectedAmenity(e.target.value);
           }}
+          className = "h-10 ml-5"
         >
           <option value="select">select</option>
           {amenities &&
@@ -143,19 +146,19 @@ const AddHotel = () => {
         </span>
       ))}
 
-      <div {...getRootProps()}>
+      <div {...getRootProps()} className="mt-10">
         <input {...getInputProps()} />
         <div>
           {files.length > 0 && (
             <button onClick={handleUpload}>Upload {files.length} files</button>
           )}
         </div>
-        Drop files here!
+        Drop Images here!
       </div>
 
       <div
         onClick={handleSubmit}
-        className="flex w-32 justify-center rounded-xl bg-primary px-4 py-2"
+        className="flex w-32 justify-center rounded-xl bg-primary px-4 py-2 mt-10"
       >
         Submit
       </div>

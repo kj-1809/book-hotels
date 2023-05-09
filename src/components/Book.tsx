@@ -64,12 +64,14 @@ export const Book: React.FC<Props> = ({ price, onSubmit }) => {
           className="m-2 mr-0 h-12 w-full rounded-l-xl border-y-2 border-l-2 border-secondary p-3 text-center"
           value={guests}
           onChange={(e) => setGuests(parseInt(e.target.value))}
+          type="number"
         />
         <input
           placeholder="Rooms"
           className="m-2 ml-0 h-12 w-full rounded-r-xl border-2 border-secondary p-3 text-center"
           value={rooms}
           onChange={(e) => setRooms(parseInt(e.target.value))}
+          type="number"
         />
       </div>
       <div className="m-2 mt-10 flex flex-row justify-between">
