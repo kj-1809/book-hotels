@@ -5,10 +5,14 @@ import { api } from "~/utils/api";
 import { generateReactHelpers } from "@uploadthing/react";
 import type { OurFileRouter } from "~/server/uploadthing";
 import Link from "next/link";
+import { GetServerSideProps } from "next";
+import { getServerAuthSession } from "~/server/auth";
+import { redirect } from "next/dist/server/api-utils";
 
 const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 
 const AddHotel = () => {
+  
   const [selectedAmenity, setSelectedAmenity] = useState<string>("");
   const [selectedAmenities, setSelectedAmenities] = useState<
     { title: string }[]
@@ -172,5 +176,20 @@ const AddHotel = () => {
     </div>
   );
 };
+
+
+export const getServerSideProps:GetServerSideProps = async (ctx) => {
+  const session = await getServerAuthSession({req : ctx.req , res : ctx.res}) 
+  if(session?.user.role !== "ADMIN"){
+    return {
+      redirect : {
+        destination : "/",
+        permanent : true
+      }
+    }
+  }
+  return {props : {}}
+}
+
 
 export default AddHotel;
