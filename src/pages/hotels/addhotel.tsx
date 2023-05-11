@@ -7,7 +7,6 @@ import type { OurFileRouter } from "~/server/uploadthing";
 import Link from "next/link";
 import { GetServerSideProps } from "next";
 import { getServerAuthSession } from "~/server/auth";
-import { redirect } from "next/dist/server/api-utils";
 
 const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 

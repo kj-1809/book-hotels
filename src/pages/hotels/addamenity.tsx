@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
+import { getServerAuthSession } from "~/server/auth";
+import { GetServerSideProps } from "next";
 
 const AddAmenity = () => {
   const [name, setName] = useState("");
@@ -49,5 +51,18 @@ const AddAmenity = () => {
     </div>
   );
 };
+
+export const getServerSideProps:GetServerSideProps = async (ctx) => {
+  const session = await getServerAuthSession({req : ctx.req , res : ctx.res}) 
+  if(session?.user.role !== "ADMIN"){
+    return {
+      redirect : {
+        destination : "/",
+        permanent : true
+      }
+    }
+  }
+  return {props : {}}
+}
 
 export default AddAmenity;
