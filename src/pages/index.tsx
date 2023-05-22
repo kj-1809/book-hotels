@@ -12,6 +12,12 @@ import homepageImage from "../../public/homepage.jpg";
 import Image from "next/image";
 import { useState } from "react";
 
+type HotelWithImages = Hotel & {
+  imageUrls: {
+    url: string
+  }[]
+}
+
 interface Props {
   hotels: (Hotel & {
     imageUrls : {
@@ -39,7 +45,7 @@ const Home: React.FC<Props> = ({ hotels }) => {
     }
   }
 
-  const [searchedHotels, setSearchedHotels] = useState<Hotel[]>([]);
+  const [searchedHotels, setSearchedHotels] = useState<HotelWithImages[]>([]);
 
   if (loading) {
     return <h1>Loading...</h1>;
