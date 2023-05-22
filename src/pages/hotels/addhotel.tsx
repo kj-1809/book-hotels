@@ -142,19 +142,20 @@ const AddHotel = () => {
         </span>
       ))}
 
-      <div className="mt-10 bg-slate-500">
+      <div className="mt-10 border-2 border-dotted border-slate-700 py-8 flex flex-col items-center">
         <UploadButton<OurFileRouter>
           endpoint="imageUploader"
           multiple
           onClientUploadComplete={(res) => {
             console.log("res : ", res);
             if (res) {
-              const addedUrls = res.map((file) => ({url : file.fileUrl}));
-              setImageUrls(addedUrls)
+              const addedUrls = res.map((file) => ({ url: file.fileUrl }));
+              setImageUrls(addedUrls);
             }
             alert("Upload Completed");
           }}
         />
+        {imageUrls.length > 0 && <h1 className = "mt-5">{imageUrls.length} images uploaded ✅</h1>}
       </div>
       <div
         onClick={handleSubmit}
