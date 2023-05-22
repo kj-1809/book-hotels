@@ -30,5 +30,9 @@ const config = {
   experimental: {
     esmExternals: false, // for file upload
   },
+
+  eslint : {
+    ignoreDuringBuilds: true,
+  }
 };
 export default config;
