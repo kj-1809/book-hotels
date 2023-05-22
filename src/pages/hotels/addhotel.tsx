@@ -2,16 +2,14 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { api } from "~/utils/api";
-import { generateReactHelpers } from "@uploadthing/react";
+import { UploadButton } from "@uploadthing/react";
 import type { OurFileRouter } from "~/server/uploadthing";
 import Link from "next/link";
 import { GetServerSideProps } from "next";
 import { getServerAuthSession } from "~/server/auth";
-
-const { useUploadThing } = generateReactHelpers<OurFileRouter>();
+import "@uploadthing/react/styles.css";
 
 const AddHotel = () => {
-  
   const [selectedAmenity, setSelectedAmenity] = useState<string>("");
   const [selectedAmenities, setSelectedAmenities] = useState<
     { title: string }[]
@@ -65,19 +63,7 @@ const AddHotel = () => {
     );
   }
 
-  const { getRootProps, getInputProps, isDragActive, files, startUpload } =
-    useUploadThing("imageUploader");
-
-  console.log("files : ", files);
-
-  const handleUpload = async () => {
-    const data = await startUpload();
-    const structuredData = data.map((ele) => ({
-      url: ele.fileUrl,
-    }));
-
-    setImageUrls(structuredData!);
-  };
+  const handleUpload = async () => {};
 
   return (
     <div className="p-5">
@@ -156,16 +142,20 @@ const AddHotel = () => {
         </span>
       ))}
 
-      <div {...getRootProps()} className="mt-10">
-        <input {...getInputProps()} />
-        <div>
-          {files.length > 0 && (
-            <button onClick={handleUpload}>Upload {files.length} files</button>
-          )}
-        </div>
-        Drop Images here!
+      <div className="mt-10 bg-slate-500">
+        <UploadButton<OurFileRouter>
+          endpoint="imageUploader"
+          multiple
+          onClientUploadComplete={(res) => {
+            console.log("res : ", res);
+            if (res) {
+              const addedUrls = res.map((file) => ({url : file.fileUrl}));
+              setImageUrls(addedUrls)
+            }
+            alert("Upload Completed");
+          }}
+        />
       </div>
-
       <div
         onClick={handleSubmit}
         className="mt-10 flex w-32 justify-center rounded-xl bg-primary px-4 py-2"
@@ -176,19 +166,17 @@ const AddHotel = () => {
   );
 };
 
-
-export const getServerSideProps:GetServerSideProps = async (ctx) => {
-  const session = await getServerAuthSession({req : ctx.req , res : ctx.res}) 
-  if(session?.user.role !== "ADMIN"){
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getServerAuthSession({ req: ctx.req, res: ctx.res });
+  if (session?.user.role !== "ADMIN") {
     return {
-      redirect : {
-        destination : "/",
-        permanent : true
-      }
-    }
+      redirect: {
+        destination: "/",
+        permanent: true,
+      },
+    };
   }
-  return {props : {}}
-}
-
+  return { props: {} };
+};
 
 export default AddHotel;
