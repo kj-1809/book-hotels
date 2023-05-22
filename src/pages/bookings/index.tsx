@@ -1,14 +1,19 @@
 import { Booking } from "@prisma/client";
-import { GetServerSideProps } from "next";
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  PreviewData,
+} from "next";
+import { ParsedUrlQuery } from "querystring";
 import { BookingCard } from "~/components/BookingCard";
 import { getServerAuthSession } from "~/server/auth";
 import { prisma } from "~/server/db";
 
 interface Props {
   bookings: (Booking & {
-    hotel : {
-      name : string
-    }
+    hotel: {
+      name: string;
+    };
   })[];
 }
 
@@ -37,7 +42,9 @@ const Bookings: React.FC<Props> = ({ bookings }) => {
 };
 export default Bookings;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>
+) => {
   const session = await getServerAuthSession({
     req: context.req,
     res: context.res,
@@ -55,21 +62,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     where: {
       userId: session?.user.userId,
     },
-    include :{
-      hotel : {
-        select : {
-          name : true
-        } 
-      }
+    include: {
+      hotel: {
+        select: {
+          name: true,
+        },
+      },
     },
-    orderBy : {
-      createdAt : "desc"
-    }
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   return {
     props: {
-      bookings : JSON.parse(JSON.stringify(bookings))
+      bookings: JSON.parse(JSON.stringify(bookings)),
     },
   };
 };
