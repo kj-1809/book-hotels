@@ -55,7 +55,7 @@ const Hotel: React.FC<Props> = ({ hotel, userId }) => {
           },
           onError: (e) => {
             toast.error("Some error occured !");
-            console.log("error :: " , e)
+            console.log("error :: ", e);
           },
         }
       );
@@ -77,6 +77,7 @@ const Hotel: React.FC<Props> = ({ hotel, userId }) => {
             alt="hotel-img"
             className="rounded-3xl sm:rounded-none sm:rounded-l-3xl "
             fill={true}
+            style={{ objectFit: "cover" }}
           />
         </div>
         <div className="col-span-2 grid grid-cols-2 grid-rows-2 gap-2 sm:col-span-1">
@@ -86,6 +87,7 @@ const Hotel: React.FC<Props> = ({ hotel, userId }) => {
               alt="hotel-img"
               className="rounded-3xl sm:rounded-none"
               fill
+              style={{ objectFit: "cover" }}
             />
           </div>
           <div className="relative">
@@ -94,6 +96,7 @@ const Hotel: React.FC<Props> = ({ hotel, userId }) => {
               alt="hotel-img"
               className="rounded-3xl sm:rounded-none sm:rounded-tr-3xl"
               fill
+              style={{ objectFit: "cover" }}
             />
           </div>
           <div className="relative">
@@ -102,6 +105,7 @@ const Hotel: React.FC<Props> = ({ hotel, userId }) => {
               alt="hotel-img"
               className="rounded-3xl sm:rounded-none"
               fill
+              style={{ objectFit: "cover" }}
             />
           </div>
           <div className="relative">
@@ -110,6 +114,7 @@ const Hotel: React.FC<Props> = ({ hotel, userId }) => {
               alt="hotel-img"
               className="rounded-3xl sm:rounded-none sm:rounded-br-3xl"
               fill
+              style={{ objectFit: "cover" }}
             />
           </div>
         </div>
