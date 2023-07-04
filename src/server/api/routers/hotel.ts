@@ -22,6 +22,7 @@ export const hotelRouter = createTRPCRouter({
         name: z.string().max(100).min(5),
         info: z.string().max(100).min(5),
         description: z.string().min(10).max(1000),
+        location: z.string().min(3).max(40),
         price: z.number().min(500).max(10000000).multipleOf(10),
         rating: z.number().gte(1).lte(5).int(),
         amenities: z.array(
@@ -52,6 +53,7 @@ export const hotelRouter = createTRPCRouter({
           description: input.description,
           price: input.price,
           rating: input.rating,
+          location: input.location,
           amenities: {
             connect: input.amenities,
           },
@@ -73,8 +75,8 @@ export const hotelRouter = createTRPCRouter({
       console.log("success : ", success);
 
       if (!success) {
-        console.log("ending out")
-        throw new TRPCError({code : "TOO_MANY_REQUESTS"});
+        console.log("ending out");
+        throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
       }
 
       try {
