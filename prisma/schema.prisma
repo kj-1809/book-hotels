@@ -78,6 +78,7 @@ model Hotel {
     amenities   Amenity[]
     bookings    Booking[]
     imageUrls   ImageUrl[]
+    location    String?
 
     @@map("hotels")
 }

@@ -1,5 +1,4 @@
 import Image from "next/image";
-import HotelImage from "../../../public/test.jpg";
 import { Offer } from "~/components/Offer";
 import { Book } from "~/components/Book";
 import { prisma } from "~/server/db";
@@ -9,6 +8,7 @@ import { api } from "~/utils/api";
 import { getServerAuthSession } from "~/server/auth";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
+import { MdLocationOn } from "react-icons/md";
 
 interface Props {
   hotel: Hotel & {
@@ -66,10 +66,17 @@ const Hotel: React.FC<Props> = ({ hotel, userId }) => {
 
   return (
     <div className="flex flex-col px-3 py-12 sm:px-8 sm:py-16">
-      <div className="flex flex-col">
-        <h1 className="text-2xl font-semibold sm:text-4xl">{hotel.name}</h1>
-        <h1 className="my-2 text-lg sm:text-2xl">{hotel.info}</h1>
+      <div className="flex justify-between">
+        <div className="flex flex-col">
+          <h1 className="text-2xl font-semibold sm:text-4xl">{hotel.name}</h1>
+          <h1 className="my-2 text-lg sm:text-2xl">{hotel.info}</h1>
+        </div>
+        <div className="mr-2 flex items-center">
+          <MdLocationOn className="text-xl" />
+          <h1 className="ml-2 flex">{hotel.location}</h1>
+        </div>
       </div>
+
       <div className="my-6 grid h-[28rem] grid-cols-2 gap-2">
         <div className="relative col-span-2 sm:col-span-1">
           <Image
@@ -155,6 +162,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       imageUrls: true,
     },
   });
+  console.log("Hotel : ", hotel);
   const session = await getServerAuthSession({ req: ctx.req, res: ctx.res });
 
   return {
